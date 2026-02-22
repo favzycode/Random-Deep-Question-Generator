@@ -28,4 +28,4 @@ A minimalist web app that generates thought-provoking, philosophical, and intros
 
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/yourusername/random-deep-question-generator.git
+   git clone https://github.com/favzycode/random-deep-question-generator.git
