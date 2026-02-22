@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examined — Daily Philosophical Questions</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;1,300&family=Cinzel:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Ambient background -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#" onclick="showView('today')">
+        <span class="logo-symbol">◎</span>
+        <span class="logo-name">Examined</span>
+      </a>
+      <div class="nav-links">
+        <button class="nav-link active" data-view="today"    onclick="showView('today',this)">Today</button>
+        <button class="nav-link"        data-view="journal"  onclick="showView('journal',this)">Journal</button>
+        <button class="nav-link"        data-view="community" onclick="showView('community',this)">Community</button>
+      </div>
+      <div class="nav-right">
+        <span class="nav-date" id="nav-date"></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════
+       VIEW: TODAY
+  ═══════════════════════════════════════════ -->
+  <main id="view-today" class="view active">
+
+    <!-- Hero question -->
+    <section class="hero-section">
+      <div class="hero-inner">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-line"></span>
+          <span class="eyebrow-tag" id="q-tag">Existential</span>
+          <span class="eyebrow-line"></span>
+        </div>
+
+        <h1 class="hero-question" id="hero-question">
+          <!-- Filled by JS -->
+        </h1>
+
+        <div class="hero-sub" id="hero-sub"></div>
+
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="openJournalEntry()">
+            <span class="btn-icon">✦</span> Reflect &amp; Write
+          </button>
+          <button class="btn-ghost" onclick="nextQuestion()">
+            <span>New question</span>
+            <span class="btn-arrow">→</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Floating quote ornament -->
+      <div class="hero-ornament" aria-hidden="true">"</div>
+    </section>
+
+    <!-- Topic filters -->
+    <section class="filter-section">
+      <div class="filter-inner">
+        <span class="filter-label">Explore by theme</span>
+        <div class="filter-chips" id="today-filters">
+          <button class="chip active" data-topic="all"    onclick="filterToday('all',this)">All</button>
+          <button class="chip"        data-topic="existential" onclick="filterToday('existential',this)">Existential</button>
+          <button class="chip"        data-topic="ethical"     onclick="filterToday('ethical',this)">Ethical</button>
+          <button class="chip"        data-topic="personal"    onclick="filterToday('personal',this)">Personal Growth</button>
+          <button class="chip"        data-topic="metaphysical" onclick="filterToday('metaphysical',this)">Metaphysical</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Question grid -->
+    <section class="questions-section">
+      <div class="questions-grid" id="questions-grid"></div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       VIEW: JOURNAL
+  ═══════════════════════════════════════════ -->
+  <main id="view-journal" class="view">
+    <div class="page-header">
+      <h2 class="page-title">Your Journal</h2>
+      <p class="page-sub">Private reflections, visible only to you.</p>
+    </div>
+
+    <div class="journal-layout">
+      <!-- Entry list -->
+      <aside class="journal-sidebar" id="journal-sidebar">
+        <div class="jsb-header">
+          <span class="jsb-count" id="jsb-count">0 entries</span>
+          <button class="jsb-new-btn" onclick="openJournalEntry()">+ New</button>
+        </div>
+        <div class="jsb-list" id="jsb-list">
+          <div class="jsb-empty">No entries yet.<br/>Start reflecting.</div>
+        </div>
+      </aside>
+
+      <!-- Editor -->
+      <div class="journal-editor" id="journal-editor">
+        <div class="je-empty" id="je-empty">
+          <div class="je-empty-symbol">✦</div>
+          <p>Select an entry or start a new one.</p>
+        </div>
+        <div class="je-form" id="je-form" style="display:none;">
+          <div class="je-form-top">
+            <div class="je-question-label" id="je-qlabel"></div>
+            <div class="je-question-text"  id="je-qtext"></div>
+            <div class="je-meta"           id="je-meta"></div>
+          </div>
+          <textarea class="je-textarea" id="je-textarea"
+            placeholder="Begin writing… there is no right answer. Only yours."></textarea>
+          <div class="je-form-footer">
+            <div class="je-word-count" id="je-word-count">0 words</div>
+            <div class="je-actions">
+              <button class="btn-ghost sm" onclick="shareToPublic()">Share anonymously →</button>
+              <button class="btn-primary sm" onclick="saveEntry()">Save entry</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       VIEW: COMMUNITY
+  ═══════════════════════════════════════════ -->
+  <main id="view-community" class="view">
+    <div class="page-header">
+      <h2 class="page-title">Community Voices</h2>
+      <p class="page-sub">Anonymous reflections from people around the world.</p>
+    </div>
+
+    <div class="community-filters">
+      <div class="filter-chips">
+        <button class="chip active" data-topic="all"         onclick="filterCommunity('all',this)">All</button>
+        <button class="chip"        data-topic="existential" onclick="filterCommunity('existential',this)">Existential</button>
+        <button class="chip"        data-topic="ethical"     onclick="filterCommunity('ethical',this)">Ethical</button>
+        <button class="chip"        data-topic="personal"    onclick="filterCommunity('personal',this)">Personal Growth</button>
+        <button class="chip"        data-topic="metaphysical" onclick="filterCommunity('metaphysical',this)">Metaphysical</button>
+      </div>
+    </div>
+
+    <div class="community-board" id="community-board"></div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       JOURNAL MODAL (quick write from Today)
+  ═══════════════════════════════════════════ -->
+  <div class="modal-backdrop" id="modal-backdrop" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+      <button class="modal-close" onclick="closeModal(null,true)">✕</button>
+      <div class="modal-q-tag" id="modal-q-tag"></div>
+      <div class="modal-question" id="modal-question"></div>
+      <textarea class="modal-textarea" id="modal-textarea"
+        placeholder="Write freely — this belongs only to you…"></textarea>
+      <div class="modal-footer">
+        <span class="modal-words" id="modal-words">0 words</span>
+        <div class="modal-btns">
+          <button class="btn-ghost sm" onclick="shareModalToPublic()">Share anonymously</button>
+          <button class="btn-primary sm" onclick="saveModalEntry()">Save to journal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
